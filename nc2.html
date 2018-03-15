@@ -1,0 +1,141 @@
+<!--Complete the below challenges using the Ninja Class from the previous assignment. 
+    You may skip the functionality related to private variables.
+
+const ninja1 = new Ninja("Hyabusa");
+ninja1.sayName();
+// -> "My ninja name is Hyabusa!"
+ninja1.showStats();
+// -> "Name: Hayabusa, Health: 100, Speed: 3, Strength: 3" 
+
+.punch()
+Add a new method to your Ninja class called .punch(). 
+This method will take another Ninja instance and subtract 5 Health from the Ninja we passed in. 
+Your .punch() should display a console message like the below example
+
+const blueNinja = new Ninja("Goemon");
+const redNinja = new Ninja("Bill Gates");
+redNinja.punch(blueNinja);
+// -> "Goemon was punched by Bill Gates and lost 5 Health!".
+
+.kick()
+Now add a method to your Ninja class called .kick(). Kick will subtract 15 Health for each point of Strength the calling Ninja has, 
+and like .punch() will take another Ninja instance.
+blueNinja.kick(redNinja);
+// -> "Bill Gates was kicked by Goemon and lost 15 Health!"
+
+Validations
+Update .punch() and .kick() so that they only accept Instances of the Ninja class. -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+    <body>
+        <script>
+            function Ninja(name){ //let in function scope is basically private.  That's why showStats is in the function. (in order to show speed and strength)
+                //const self = this;
+                let speed = 3;
+                let strength = 3;
+                this.name = name; //public
+                this.health = 100; //public
+
+                //any functions put in this scope (scope of the function) are here b/c they need to access a 'private' var.
+
+                this.showStats = function(){ //This should show the Ninja's Strength and Speed, as well as their health. - get
+                    //remember, speed and strength are private.  THIS here to make this function public.
+             
+                    console.log('strength: ' +strength+ 'speed: ' +speed+ 'health: ' + this.health);
+                    return this;
+                }
+
+                //kick is here bc it needs to access strength.
+                // Kick will subtract 15 Health for each point of Strength the calling Ninja has, 
+                // and like .punch() will take another Ninja instance.
+
+                this.kick = function(kickedNinja){
+                    if (!(kickedNinja instanceof Ninja )){
+                        //console.log(kickedNinja + ' is not a Ninja KICK');
+                        throw new Error ("kickedNinja must be a Ninja!");
+                    }
+                    kickedNinja.health -= (15 * strength); //strength not this.strength bc strength is private.
+                    let strengthLost = (15 * strength);
+                    //console.log (strength);
+                    console.log(kickedNinja.name + " was kicked by " + this.name +  " and lost " + strengthLost + " Health!");
+                    return this;
+                    }
+
+                // this.kick = function(kickedNinja){
+                //     if (kickedNinja instanceof Ninja ){
+                //         kickedNinja.health -= (15 * strength); //strength not this.strength bc strength is private.
+                //         let strengthLost = (15 * strength);
+                //         console.log (strength);
+                //         console.log(kickedNinja.name + " was kicked by " + this.name +  " and lost " + strengthLost + " Health!");
+                //         return this;
+                //     }
+                //     else{
+                //         console.log(kickedNinja + ' is not a Ninja');
+                //     }
+                // }
+            }
+
+                
+            //method is outside of class so it's public.
+            Ninja.prototype.sayName = function(){ //This should log that Ninja's name to the console.  -get  //not privatge
+                    console.log("my ninja name is " + this.name);
+                    return this;
+            }
+            Ninja.prototype.drinkSake = function(){  //This should add +10 Health to the Ninja -set //publc var, private method.
+                    //PROTO here means we are making drinkSake the same for every instance.
+                    this.health+=10;
+                    return this;
+                }
+
+            //I made this public bc it does not need access to any private vars.
+            //I user prototype b/c this method should do the same thing across all ninjas.
+            // This method will take another Ninja instance and subtract 5 Health from the Ninja we passed in. 
+            // Your .punch() should display a console message like the below example
+
+            // const blueNinja = new Ninja("Goemon");
+            // const redNinja = new Ninja("Bill Gates");
+            // redNinja.punch(blueNinja);
+            // -> "Goemon was punched by Bill Gates and lost 5 Health!".-->
+            Ninja.prototype.punch = function(punched){
+                if (punched instanceof Ninja ){
+                    punched.health -= 5;
+                    console.log(punched.name + " was punched by " + this.name +" and lost 5 Health!")
+                    return this;
+                }
+                else{
+                    console.log(punched + " is not a Ninja");
+                }
+                
+            }
+            // Ninja.prototype.punch = function(punched){
+            //     punched.health -= 5;
+            //     console.log(punched.name + " was punched by " + this.name +" and lost 5 Health!")
+            //     return this;
+            // }
+
+                
+            // Example Outputs
+            // const ninja1 = new Ninja("Hyabusa");
+            // ninja1.sayName();
+            // -> "My ninja name is Hyabusa!"
+            // ninja1.showStats();
+            // -> "Name: Hayabusa, Health: 100, Speed: 3, Strength: 3" -->
+            const blueNinja = new Ninja("Goemon");
+            const redNinja = new Ninja("Bill Gates");
+            redNinja.punch(blueNinja);
+            blueNinja.kick(redNinja);
+            let glen = 5;
+            redNinja.punch(glen);
+            redNinja.kick(glen);
+
+        </script>
+    </body>
+</html>
